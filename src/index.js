@@ -5,7 +5,12 @@ import { DB_NAME } from './constants.js'
 import connectDB from "./db/indexdb.js"
 dotenv.config({path:'./env'})
 
-connectDB();
+connectDB()
+.then()
+.catch((error)=> {
+    console.log("Data base connection failed",error);
+    
+})
 
 
 
