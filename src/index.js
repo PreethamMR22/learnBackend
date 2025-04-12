@@ -5,8 +5,14 @@ import { DB_NAME } from './constants.js'
 import connectDB from "./db/indexdb.js"
 dotenv.config({path:'./env'})
 
+
 connectDB()
-.then()
+.then(()=> {
+    const actualPort= process.env.PORT || 8000;
+   app.listen(actualPort,(req,res)=> {
+    console.log("The port is listening on port: ",actualPort);
+   })
+})
 .catch((error)=> {
     console.log("Data base connection failed",error);
     
