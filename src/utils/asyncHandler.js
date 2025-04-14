@@ -1,10 +1,7 @@
 import express from 'express'
-
-const asyncHandler=(requestHandler)=>()=> {
-    return Promise.resolve(requestHandler(req,res,next)).catch((error)=> {
-        next(error);
-    })
-}
+const asyncHandler = (fn) => (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+};
 
 
 

@@ -3,12 +3,14 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { DB_NAME } from './constants.js'
 import connectDB from "./db/indexdb.js"
-dotenv.config({path:'./env'})
+import { app } from "./app.js"
+dotenv.config({path:"./.env"})
 
 
 connectDB()
 .then(()=> {
-    const actualPort= process.env.PORT || 8000;
+
+    const actualPort= process.env.PORT || 4000;
    app.listen(actualPort,(req,res)=> {
     console.log("The port is listening on port: ",actualPort);
    })
@@ -17,10 +19,6 @@ connectDB()
     console.log("Data base connection failed",error);
     
 })
-
-
-
-
 
 
 
