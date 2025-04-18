@@ -1,9 +1,4 @@
-const paramfunc=function() {
-    console.log("I am paramfunction");
-}
-const higherOrderFunction=function(paramfunc){
-    console.log("I am higher order function");
-    paramfunc();
-}
+let array=["name","namleses", ""];
+const check=array.some(field=> field.trim==="")
 
-higherOrderFunction(paramfunc);
+console.log(check);
