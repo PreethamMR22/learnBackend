@@ -67,6 +67,7 @@ userSchema.pre("save",async function  (next) {
     next();
 })
 
+//TODO: this is the 
 //custom methods to generate the tokens
 userSchema.methods.generateAccessToken= function () {
    return  jwt.sign ({
@@ -87,7 +88,7 @@ userSchema.methods.generateRefreshToken=function() {
     },
     process.env.REFRESH_TOKEN_SECRET,
     {
-        expiresIn:REFRESH_TOKEN_EXPIRY,
+        expiresIn:process.env.REFRESH_TOKEN_EXPIRY,
     }
 )
 }
