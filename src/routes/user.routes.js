@@ -6,7 +6,9 @@ import {
   refreshAccessToken,
   changeCurrentPassword,
   getCurrentUser,
-  updateAccountDetails
+  updateAccountDetails,
+  updateAvatar,
+  updateCoverImage
 } from "../controllers/user.controller.js"; //end alli use .js, otherwise it gives error
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/Auth.middleware.js";
@@ -39,7 +41,10 @@ router.route("/update-password").post(verifyJWT,changeCurrentPassword);
 
 router.route("/current-user").post(verifyJWT,getCurrentUser);
 
-router.route("/update-details").post(verifyJWT,updateAccountDetails);
+router.route("/update-details").patch(verifyJWT,updateAccountDetails); 
 
+router.route("/avtar-update").patch(verifyJWT,upload.single("avatar"),updateAvatar)
+
+router.route("/cover-image-update").patch(verifyJWT,upload.single("coverImage"),updateCoverImage)
 
 export default router;
