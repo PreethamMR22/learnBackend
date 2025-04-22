@@ -156,8 +156,8 @@ return res.status(200)
 const userLogout= asyncHandler(async (req,res)=> {
     await User.findByIdAndUpdate(req.user._id,
       {
-        $set: {
-          refreshToken:undefined,
+        $unset: {
+          refreshToken:1, //unset , unsets this variable where refreshToken=1 is flagging
         },
         new:true
       }
@@ -243,10 +243,11 @@ const getCurrentUser= asyncHandler(async (req,res)=> {
     throw new ApiError(404,"User not found");
   }
   const loggedInUser= req.user;
+  const filteredData= await User.findById(req.user._id).select("username fullname avatar coverImage")
   res.status(200)
   .json(
     new ApiResponse(200,
-      {loggedInUser},
+      {filteredData},
       "User details fetched successfully"
     )
   )
@@ -280,7 +281,7 @@ const updateAccountDetails=asyncHandler(async (req,res)=> {
 
 
 const updateAvatar= asyncHandler(async (req,res)=> {
-  const avatarLocalPath=req.files?.path;
+  const avatarLocalPath=req.files?.avatar[0].path;
   if(!avatarLocalPath) {
     throw new ApiError(400,"No local path found");
   }
@@ -306,7 +307,7 @@ res.status(200)
 })
 
 const updateCoverImage= asyncHandler(async (req,res)=> {
-  const CoverImageLocalPath=req.files?.path;
+  const CoverImageLocalPath=req.files?.coverImage[0].path;
   if(!CoverImageLocalPath) {
     throw new ApiError(400,"No local path found");
   }
@@ -367,7 +368,7 @@ const getUserChannelProfile= asyncHandler( async (req,res)=> {
           $size: "$subscribers",
         },
         channelIsSubscribedToCount: {
-          $size:"subscribedTo",
+          $size:"$subscribedTo",
         },
         isSubscribed: {
           $cond: {
@@ -406,7 +407,7 @@ const getUserChannelProfile= asyncHandler( async (req,res)=> {
 
 })
 
-const getWatchHistory=asyncHandler( async (req,res)=> {
+const getWatchHistory=   asyncHandler( async (req,res)=> {
 const user= await User.aggregate([
   {
     $match:{

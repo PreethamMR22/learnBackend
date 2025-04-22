@@ -8,7 +8,9 @@ import {
   getCurrentUser,
   updateAccountDetails,
   updateAvatar,
-  updateCoverImage
+  updateCoverImage,
+  getUserChannelProfile,
+  getWatchHistory
 } from "../controllers/user.controller.js"; //end alli use .js, otherwise it gives error
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/Auth.middleware.js";
@@ -37,14 +39,27 @@ router.route("/logout").post(verifyJWT, userLogout);
 
 router.route("/refresh-token").post(refreshAccessToken);
 
-router.route("/update-password").post(verifyJWT,changeCurrentPassword);
+router.route("/update-password").patch(verifyJWT,changeCurrentPassword);
 
-router.route("/current-user").post(verifyJWT,getCurrentUser);
+router.route("/current-user").get(verifyJWT,getCurrentUser);
 
 router.route("/update-details").patch(verifyJWT,updateAccountDetails); 
 
-router.route("/avtar-update").patch(verifyJWT,upload.single("avatar"),updateAvatar)
+router.route("/update-avatar").patch(verifyJWT,upload.fields([
+  {
+    name:"avatar",
+    maxCount:1
+  }
+]),updateAvatar)
 
-router.route("/cover-image-update").patch(verifyJWT,upload.single("coverImage"),updateCoverImage)
+router.route("/update-cover-image").patch(verifyJWT,upload.fields([
+  {
+    name:"coverImage",
+    maxCount:1
+  }
+]),updateCoverImage)
 
+router.route("/c/:username").get(verifyJWT,getUserChannelProfile)
+
+router.route("/history").get(verifyJWT,getWatchHistory)
 export default router;
